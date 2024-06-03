@@ -31,7 +31,7 @@ jobs:
         continue-on-error: true
 
       - name: Create issue on failure
-        if: failure()
+        if: ${{ steps.pytest.outcome == 'failure' }}
         uses: JasonEtco/create-an-issue@v2
         with:
           title: "Test Failure: ${{ github.sha }}"
