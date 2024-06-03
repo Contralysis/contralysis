@@ -47,6 +47,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ISSUE_TOKEN }}
         run: |
-          gh issue create —title "Automated Test Failure" —body "The 'Test with pytest' step has failed. Please investigate the issue." —label "bug"
+          gh issue create —t "Automated Test Failure" —b "The 'Test with pytest' step has failed. Please investigate the issue." —l "bug"
         shell: bash
         continue-on-error: false
