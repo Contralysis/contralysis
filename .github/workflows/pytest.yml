@@ -1,4 +1,4 @@
-name: Python package
+name: Test
 
 on: [push]
 
@@ -25,7 +25,7 @@ jobs:
           pip install pytest
           pip install requests
           
-      - name: Test with pytest
+      - name: pytest
         id: pytest
         run: pytest
         continue-on-error: true
@@ -49,10 +49,13 @@ jobs:
         run: |
           gh issue create \
             -t "Automated Test Failure" \
-            -b "The 'Test with pytest' step has failed.
-            commit: ${{ github.sha }}
-            committer: @${{ github.actor }}
+            -b "'pytest' step has failed
+            
+            *commit: ${{ github.sha }}*
+            *committer: @${{ github.actor }}*
+            
             Please investigate the issue. 
+
             Check the [workflow run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details." \
             -l "bug" \
             -a ${{ github.actor }}
