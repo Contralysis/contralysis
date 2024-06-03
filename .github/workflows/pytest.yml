@@ -30,14 +30,23 @@ jobs:
         run: pytest
         continue-on-error: true
 
-      - name: Create issue on failure
-        if: ${{ steps.pytest.outcome == 'failure' }}
-        uses: JasonEtco/create-an-issue@v2
-        with:
-          title: "Test Failure: ${{ github.sha }}"
-          body: |
-            One or more tests failed in the build. Please check the workflow run for details:
-            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-          labels: bug
+      # - name: Create issue on failure
+      #   if: ${{ steps.pytest.outcome == 'failure' }}
+      #   uses: JasonEtco/create-an-issue@v2
+      #   with:
+      #     title: "Test Failure: ${{ github.sha }}"
+      #     body: |
+      #       One or more tests failed in the build. Please check the workflow run for details:
+      #       ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      #     labels: bug
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.ISSUE_TOKEN }}
+
+      - name: Create GitHub Issue on Failure
+        if: failure() && ${{ steps.pytest.outcome == 'failure' }}
         env:
           GITHUB_TOKEN: ${{ secrets.ISSUE_TOKEN }}
+        run: |
+          gh issue create —title "Automated Test Failure" —body "The 'Test with pytest' step has failed. Please investigate the issue." —label "bug"
+        shell: bash
+        continue-on-error: false
