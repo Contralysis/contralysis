@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ethereum Address Checker</title>
+</head>
+<body>
+    <h1>Ethereum Address Checker</h1>
+    <form id="address-form">
+        <input type="text" name="address" placeholder="Enter Ethereum address" required>
+        <button type="submit">Check Address</button>
+    </form>
+    <div id="result"></div>
+    <script>
+        document.getElementById('address-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            fetch('/check', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                document.getElementById('result').innerText = data.message;
+                if (data.message !== '지갑 주소 입니다') {
+                    const address = formData.get('address');
+                    const reportLink = document.createElement('a');
+                    reportLink.href = `/report?address=${address}`;
+                    reportLink.innerText = 'View Report';
+                    document.getElementById('result').appendChild(reportLink);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('result').innerText = '잘못된 주소입니다';
+            });
+        });
+    </script>
+</body>
+</html>
