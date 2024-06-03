@@ -47,6 +47,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ISSUE_TOKEN }}
         run: |
-          gh issue create -t "Automated Test Failure" -b "The 'Test with pytest' step has failed. Please investigate the issue." -l "bug"
+          gh issue create -t "Automated Test Failure" -b "The 'Test with pytest' step has failed in commit ${{ github.sha }} by @${{ github.actor }}. Please investigate the issue.\n\nCheck the [workflow run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details." -l "bug" -a ${{ github.actor }}
         shell: bash
         continue-on-error: false
