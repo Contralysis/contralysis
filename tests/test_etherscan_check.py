@@ -5,7 +5,7 @@ class TestEtherscanCehck:
 
     def test_contract(self):
 
-        src_dir = 'test_etherscan_check'
+        src_dir = 'tests/test_etherscan_check'
 
         with open(f"{src_dir}/0x4957295167DfA9AEC2cA40C377D0F8CC4732c7af.txt", "r", newline="\r\n") as f:
             src_code = "".join(f.readlines())
