@@ -30,7 +30,7 @@
                 <button type="submit">Check Address</button>
             </form>
             <div class="spinner" id="spinner"></div>
-            <div id="result"></div>
+            <strong><div id="result"></div></strong>
             <br>
             <a href="/history" class=button>View History</button></a>
             <br>
@@ -43,7 +43,6 @@
             const spinner = document.getElementById('spinner');
             const resultDiv = document.getElementById('result');
             
-
             spinner.style.display = 'block';
             resultDiv.innerHTML = '';
 
@@ -60,9 +59,8 @@
                     const reportLink = document.createElement('a');
 
                     reportLink.href = `/report?address=${address}`;
-                    reportLink.innerText = 'View Report';
-                    
-                    resultDiv.innerHTML = '';
+                    reportLink.innerText = '\nView Report';
+                                       
                     resultDiv.appendChild(reportLink);
                 }
             })
