@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>History of Reports</h1>
+        {% if reports %}
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Address</th>
+                        <th>Result</th>
+                        <th>Analysis</th>
+                    </tr>
+                    {% for report in reports %}
+                        <tr>
+                            <td>{{ report.address }}</td>
+                            <td>{{ report.result }}</td>
+                            <td><pre>{{ report.analysis }}</pre></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% else %}
+            <p>No reports found.</p>
+        {% endif %}
+        <br>
+        <a href="/">Home</a>
+    </div>
+</body>
+</html>
