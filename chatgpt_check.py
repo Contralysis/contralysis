@@ -7,8 +7,10 @@ def analyze_contract(source_code):
         response = openai.chat.completions.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "system", "content": "You are a security expert specializing in analyzing Ethereum smart contract code for malicious behavior. you must evince malicious or not. if code is not malicious, must tell not malicious. do not insert another word between not and malicious. and then make report that analyze it."},
-                {"role": "user", "content": f"Analyze the following Ethereum smart contract source code for any malicious behavior:\n\n{source_code}"}
+                {"role": "system", "content": "You are a security expert specializing in analyzing Ethereum smart contract code for malicious or vulnerability behavior."},
+                {"role": "system", "content": "you must evince malicious or not. if code is not malicious, must tell not malicious. do not insert another word between not and malicious. and then make report that analyze it. Tell me it's malicious even if it's judged to be vulnerable."},
+                {"role": "user", "content": f"Analyze the following Ethereum smart contract source code for any malicious behavior:\n\n{source_code}"},
+                {"role": "system", "content": "In particular, see if there are no part of the recurrence vulnerability or specific results."}
             ]
         )
 
