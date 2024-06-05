@@ -30,7 +30,7 @@
                 <button type="submit">Check Address</button>
             </form>
             <div class="spinner" id="spinner"></div>
-            <strong><div id="result"></div></strong>
+            <div id="result"></div>
             <br>
             <a href="/history" class=button>View History</button></a>
             <br>
@@ -59,8 +59,9 @@
                     const reportLink = document.createElement('a');
 
                     reportLink.href = `/report?address=${address}`;
-                    reportLink.innerText = '\nView Report';
-                                       
+                    reportLink.innerText = 'View Report';
+                    
+                    resultDiv.innerHTML = '';
                     resultDiv.appendChild(reportLink);
                 }
             })
