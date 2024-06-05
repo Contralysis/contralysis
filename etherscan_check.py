@@ -33,7 +33,7 @@ def check_address(address):
         return 'error', None
 
     if data['status'] == '1':
-        if data['result'] == '':  # Empty result indicates a wallet address
+        if data['result'][0]['SourceCode'] == '':  # Empty result indicates a wallet address
             return 'wallet', None
         elif data['result'][0]['SourceCode']:  # Check if source code is present
             return 'contract', data['result'][0]['SourceCode']
