@@ -3,10 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Contract Report</title>
+    <title>Report</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Smart Contract Report</h1>
-    <pre>{{ report }}</pre>
+    <div class="container">
+        <h1>Report</h1>
+        <p><strong>Address:</strong> {{ address }}</p>
+        <p><strong>Result:</strong> {{ report }}</p>
+        <p><strong>Analysis</strong></p>
+        <pre>{{ analysis }}</pre>
+        <br>
+        <a href="/">Home</a>
+    </div>
 </body>
 </html>
