@@ -1,21 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ethereum Address Checker</title>
-</head>
-<body>
-    <h1>Ethereum Address Checker</h1>
-    <form id="address-form">
-        <input type="text" name="address" placeholder="Enter Ethereum address" required>
-        <button type="submit">Check Address</button>
-    </form>
-    <div id="result"></div>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ethereum Address Checker</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <style>
+            .spinner {
+                display: none;
+                width: 50px;
+                height: 50px;
+                border: 5px solid rgba(0, 0, 0, 0.1);
+                border-left-color: #6ab04c;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                margin: 20px auto;
+            }
+    
+            @keyframes spin {
+                to { transform: rotate(360deg); }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Ethereum Address Checker</h1>
+            <form id="address-form">
+                <input type="text" name="address" placeholder="Enter Ethereum address" required>
+                <button type="submit">Check Address</button>
+            </form>
+            <div class="spinner" id="spinner"></div>
+            <div id="result"></div>
+            <br>
+            <a href="/history" class=button>View History</button></a>
+            <br>
+            <a href="/logout">Logout</a>
+        </div>
     <script>
         document.getElementById('address-form').addEventListener('submit', function(event) {
             event.preventDefault();
             const formData = new FormData(event.target);
+            const spinner = document.getElementById('spinner');
+            const resultDiv = document.getElementById('result');
+            
+
+            spinner.style.display = 'block';
+            resultDiv.innerHTML = '';
+
             fetch('/check', {
                 method: 'POST',
                 body: formData
@@ -27,14 +58,20 @@
                 if (data.message !== '지갑 주소 입니다') {
                     const address = formData.get('address');
                     const reportLink = document.createElement('a');
+
                     reportLink.href = `/report?address=${address}`;
                     reportLink.innerText = 'View Report';
-                    document.getElementById('result').appendChild(reportLink);
+                    
+                    resultDiv.innerHTML = '';
+                    resultDiv.appendChild(reportLink);
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
                 document.getElementById('result').innerText = '잘못된 주소입니다';
+            })
+            .finally(() => {
+                spinner.style.display = 'none';
             });
         });
     </script>
