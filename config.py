@@ -27,3 +27,5 @@ class Config:
 print("Loaded Firebase Config:")
 for key, value in Config.FIREBASE_CONFIG.items():
     print(f"{key}: {value}")
+
+print(os.getenv('ETHERSCAN_API_KEY'))
