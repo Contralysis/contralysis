@@ -5,27 +5,34 @@ from chatgpt_check import analyze_contract
 from firebase_config import init_firebase, save_report, get_report, get_user_reports, get_analysis, verify_id_token
 import firebase_admin
 from firebase_admin import auth
+from config import Config
+
+import os
+from dotenv import load_dotenv
+
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
+app.config.from_object(Config)
 
 # Initialize Firebase
 init_firebase()
+
 
 @app.route('/')
 def index():
     if 'user_id' not in session:
         return redirect(url_for('login'))
     
-    return render_template('index.html')
+    return render_template('index.html', firebase_config=app.config['FIREBASE_CONFIG'])
 
 @app.route('/register', methods=['GET'])
 def register():
-    return render_template('register.html')
+    return render_template('register.html', firebase_config=app.config['FIREBASE_CONFIG'])
 
 @app.route('/login', methods=['GET'])
 def login():
-    return render_template('login.html')
+    return render_template('login.html', firebase_config=app.config['FIREBASE_CONFIG'])
 
 @app.route('/authenticate', methods=['POST'])
 def authenticate():

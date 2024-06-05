@@ -8,12 +8,19 @@
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
     <script>
-        var firebaseConfig = {
+        document.addEventListener('DOMContentLoaded', function() {
+            var firebaseConfig = {
+                apiKey: "{{ firebase_config['apiKey'] }}",
+                authDomain: "{{ firebase_config['authDomain'] }}",
+                projectId: "{{ firebase_config['projectId'] }}",
+                storageBucket: "{{ firebase_config['storageBucket'] }}",
+                messagingSenderId: "{{ firebase_config['messagingSenderId'] }}",
+                appId: "{{ firebase_config['appId'] }}"
+            };
 
-        };
-
-        firebase.initializeApp(firebaseConfig);
-
+            firebase.initializeApp(firebaseConfig);
+        });
+    
         function login() {
             var email = document.getElementById('email').value;
             var password = document.getElementById('password').value;
