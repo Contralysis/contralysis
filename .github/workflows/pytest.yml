@@ -54,7 +54,9 @@ jobs:
       #     labels: bug
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.ISSUE_TOKEN }}
-
+      - name: try open server
+        run: |
+          python server.py
       - name: Create GitHub Issue on Failure
         if: failure() && ${{ steps.pytest.outcome == 'failure' }}
         env:
