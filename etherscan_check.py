@@ -6,9 +6,6 @@ from bs4 import BeautifulSoup
 load_dotenv()
 
 API_KEY = os.getenv('ETHERSCAN_API_KEY')
-print("><")
-if API_KEY:
-    print('api key:', API_KEY)
 
 def get_bytecode(address):
     url = f'https://oko.palkeo.com/{address}/code/'
@@ -61,5 +58,8 @@ def check_address(address):
             # convert byte code to source code 
             return get_bytecode(address)
 
-if __name__ == '__main__':
-    print(check_address('0xasdfdsaf'))
+print(check_address('0x95222290DD7278Aa3Ddd389Cc1E1d165CC4BAfe5'))
+if API_KEY != None
+    print("there are api key\n")
+    print(API_KEY)
+    
