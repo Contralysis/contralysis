@@ -60,7 +60,7 @@ jobs:
       #     GITHUB_TOKEN: ${{ secrets.ISSUE_TOKEN }}
 
       - name: Create GitHub Issue on Failure
-        if: failure() && ${{ steps.pytest.outcome == 'failure' }}
+        if: ${{ steps.pytest.outcome == 'failure' }}
         run: |
           gh issue create \
             -t "Automated Test Failure" \
