@@ -1,0 +1,31 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract SimpleWallet {
+    mapping(address => uint256) public balances;
+
+    // Event to log deposits
+    event Deposit(address indexed user, uint256 amount);
+    
+    // Event to log withdrawals
+    event Withdrawal(address indexed user, uint256 amount);
+
+    // Function to deposit Ether into the contract
+    function deposit() public payable {
+        balances[msg.sender] += msg.value;
+        emit Deposit(msg.sender, msg.value);
+    }
+
+    // Function to withdraw Ether from the contract
+    function withdraw(uint256 amount) public {
+        require(balances[msg.sender] >= amount, "Insufficient balance");
+        balances[msg.sender] -= amount;
+        payable(msg.sender).transfer(amount);
+        emit Withdrawal(msg.sender, amount);
+    }
+
+    // Function to check the balance of the user
+    function getBalance() public view returns (uint256) {
+        return balances[msg.sender];
+    }
+}

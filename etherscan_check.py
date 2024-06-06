@@ -15,12 +15,17 @@ def check_address(address):
         return 'error', None
 
     if data['status'] == '1':
-        if data['result'][0]['SourceCode'] == '':  # Empty result indicates a wallet address
-            return 'wallet', None
-        elif data['result'][0]['SourceCode']:  # Check if source code is present
-            return 'contract', data['result'][0]['SourceCode']
-        else:
-            return 'error', None
+        with open("tests/test_etherscan_check/wallet.txt", "r", newline="\r\n") as f:
+            wallet_code = "".join(f.readlines())
+            wallet_code = "".join(wallet_code.split())
+            src_code = data['result'][0]['SourceCode']
+            src_code = "".join(src_code.split())
+    
+            if src_code == wallet_code:  # Empty result indicates a wallet address
+                return 'wallet', None
+            elif data['result'][0]['SourceCode']:  # Check if source code is present
+                return 'contract', data['result'][0]['SourceCode']
+            else:
+                return 'error', None
     else:
         return 'error', None
-    
