@@ -7,7 +7,8 @@ load_dotenv()
 
 API_KEY = os.getenv('ETHERSCAN_API_KEY')
 print("><")
-print(API_KEY)
+if API_KEY:
+    print('api key:', API_KEY)
 
 def get_bytecode(address):
     url = f'https://oko.palkeo.com/{address}/code/'
