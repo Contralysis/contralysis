@@ -35,6 +35,11 @@ jobs:
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
           ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          PRIVATE_KEY_ID: ${{ PRIVATE_KEY_ID }}
+          PRIVATE_KEY: ${{ PRIVATE_KEY }}
+          CLIENT_EMAIL: ${{ CLIENT_EMAIL }}
+          CLIENT_ID: ${{ CLIENT_ID }}
+          CLIENT_X509_CERT_URL: ${{ CLIENT_X509_CERT_URL }}
         run: pytest
         continue-on-error: true
 
