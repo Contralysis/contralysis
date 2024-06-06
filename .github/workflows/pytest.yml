@@ -2,32 +2,29 @@ name: Test
 
 on: [push]
 
-# env:
-#   FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
-#   FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
-#   FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
-#   FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
-#   FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
-#   FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
-#   ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
-#   OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-#   PRIVATE_KEY_ID: ${{ secrets.PRIVATE_KEY_ID }}
-#   PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-#   CLIENT_EMAIL: ${{ secrets.CLIENT_EMAIL }}
-#   CLIENT_ID: ${{ secrets.CLIENT_ID }}
-#   CLIENT_X509_CERT_URL: ${{ secrets.CLIENT_X509_CERT_URL }}
-#   GITHUB_TOKEN: ${{ secrets.ISSUE_TOKEN }}
-
-
-
 jobs:
   unit-test:
-    environment: secrets
     runs-on: macos-latest
     strategy:
       matrix:
         python-version: ["3.10"]
-
+    environment: secrets
+    env:
+      FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+      FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
+      FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+      FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
+      FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
+      FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+      ETHERSCAN_API_KEY: ${{ secrets.ETHERSCAN_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      PRIVATE_KEY_ID: ${{ secrets.PRIVATE_KEY_ID }}
+      PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+      CLIENT_EMAIL: ${{ secrets.CLIENT_EMAIL }}
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
+      CLIENT_X509_CERT_URL: ${{ secrets.CLIENT_X509_CERT_URL }}
+      GITHUB_TOKEN: ${{ secrets.ISSUE_TOKEN }}
+    
     steps:
       - uses: actions/checkout@v4
       - name: Setup Python # Set Python version
