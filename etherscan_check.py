@@ -60,3 +60,6 @@ def check_address(address):
         else:
             # convert byte code to source code 
             return get_bytecode(address)
+
+if __name__ == '__main__':
+    print(check_address(0xasdfdsaf))
