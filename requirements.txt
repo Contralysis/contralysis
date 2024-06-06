@@ -4,3 +4,5 @@ requests
 openai
 pytest
 flask
+selenium
+chromedriver-autoinstaller
