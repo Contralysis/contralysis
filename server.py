@@ -6,6 +6,7 @@ from firebase_config import init_firebase, save_report, get_report, get_user_rep
 import firebase_admin
 from firebase_admin import auth
 from config import Config
+import time
 
 import os
 from dotenv import load_dotenv
@@ -37,6 +38,8 @@ def login():
 @app.route('/authenticate', methods=['POST'])
 def authenticate():
     id_token = request.form['idToken']
+    
+    time.sleep(1)
     user_id = verify_id_token(id_token)
 
     if user_id:
