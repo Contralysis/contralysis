@@ -39,7 +39,7 @@ def login():
 def authenticate():
     id_token = request.form['idToken']
     
-    time.sleep(1)
+    time.sleep(1) # need to wait a bit before verifying id token
     user_id = verify_id_token(id_token)
 
     if user_id:
