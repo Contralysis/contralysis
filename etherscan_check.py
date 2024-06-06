@@ -39,10 +39,10 @@ def check_address(address):
 
 
     if response.status_code != 200:
-        return 'error', None
+        return 'error1', None
 
     if data['status'] == '0':
-        return 'error', None
+        return 'error2', None
 
     with open("tests/test_etherscan_check/wallet.txt", "r", newline="\r\n") as f:
         wallet_code = "".join(f.readlines())
