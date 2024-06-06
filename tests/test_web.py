@@ -74,11 +74,11 @@ class TestWebApp:
         password_field.send_keys("12345678")
         login_button.click()
         
-        # time.sleep(5)  # 페이지 로드 대기
-        wait = WebDriverWait(self.driver, timeout=5)
-        title = wait.until(lambda d: "Ethereum Address Checker" in self.driver.title )
+        # 페이지 로드 대기
+        wait = WebDriverWait(self.driver, 10)
+        wait.until(lambda driver: "Ethereum Address Checker" in driver.title)
         
-        assert title
+        assert "Ethereum Address Checker" in self.driver.title
 
     def test_check_scam(self):
         self.test_login()
@@ -89,8 +89,10 @@ class TestWebApp:
         address_field.send_keys("0xA0cfba0825ac28441f3b718fD2e40Ad7605F93c7")
         check_button.click()
     
-        time.sleep(2)  # 페이지 로드 대기
-    
+        # 결과 텍스트가 나타날 때까지 대기
+        wait = WebDriverWait(self.driver, 10)
+        wait.until(text_to_be_present_in_element(("id", "result"), "This is malicious."))
+        
         # 체크 후 결과 확인
         result_text = self.driver.find_element("id", "result").text
         print(f"Scam Result Text: {result_text}")  # 결과 텍스트를 출력하여 디버그
@@ -105,8 +107,10 @@ class TestWebApp:
         address_field.send_keys("0x9bcCB0Dd17c1B2A62B70Ac4Bfad033a90CbA6F50")
         check_button.click()
     
-        time.sleep(2)  # 페이지 로드 대기
-    
+        # 결과 텍스트가 나타날 때까지 대기
+        wait = WebDriverWait(self.driver, 10)
+        wait.until(text_to_be_present_in_element(("id", "result"), "This is not malicious."))
+        
         # 체크 후 결과 확인
         result_text = self.driver.find_element("id", "result").text
         print(f"Normal Result Text: {result_text}")  # 결과 텍스트를 출력하여 디버그
@@ -121,8 +125,10 @@ class TestWebApp:
         address_field.send_keys("0x24745f2B750f8cAC17F")
         check_button.click()
     
-        time.sleep(2)  # 페이지 로드 대기
-    
+        # 결과 텍스트가 나타날 때까지 대기
+        wait = WebDriverWait(self.driver, 10)
+        wait.until(text_to_be_present_in_element(("id", "result"), "Invalid address"))
+        
         # 체크 후 결과 확인
         result_text = self.driver.find_element("id", "result").text
         print(f"Invalid Result Text: {result_text}")  # 결과 텍스트를 출력하여 디버그
@@ -137,8 +143,10 @@ class TestWebApp:
         address_field.send_keys("0xF6a0Bdc3F28f293DF75cbC174dad31CDAB53500A")
         check_button.click()
     
-        time.sleep(2)  # 페이지 로드 대기
-    
+        # 결과 텍스트가 나타날 때까지 대기
+        wait = WebDriverWait(self.driver, 10)
+        wait.until(text_to_be_present_in_element(("id", "result"), "This is the wallet address"))
+        
         # 체크 후 결과 확인
         result_text = self.driver.find_element("id", "result").text
         print(f"Wallet Result Text: {result_text}")  # 결과 텍스트를 출력하여 디버그
@@ -157,7 +165,7 @@ class TestWebApp:
         password_field.send_keys("wrong password")
         login_button.click()
         
-        wait = WebDriverWait(self.driver, timeout=5)
+        wait = WebDriverWait(self.driver, 5)
         alert = wait.until(alert_is_present())
         
         assert alert
