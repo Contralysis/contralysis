@@ -36,6 +36,9 @@
             <br>
             <a href="/logout">Logout</a>
         </div>
+
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+    
     <script>
         document.getElementById('address-form').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -62,6 +65,99 @@
                     reportLink.innerText = '\nView Report';
                                        
                     resultDiv.appendChild(reportLink);
+
+                    const paymentButton = document.createElement('button');
+                    paymentButton.id = 'payButton';
+                    paymentButton.innerText = 'Payment';
+                    resultDiv.appendChild(paymentButton);
+
+                    paymentButton.addEventListener('click', async () => {
+                        if (typeof window.ethereum !== 'undefined') {
+                            console.log('MetaMask is installed!');
+
+                            const contractAddress = '0x24745f2B750f8cAC170AC0699CB91003A4FEB33F';
+                            const contractABI = [
+                                {
+                                    "inputs": [],
+                                    "stateMutability": "nonpayable",
+                                    "type": "constructor"
+                                },
+                                {
+                                    "anonymous": false,
+                                    "inputs": [
+                                        {
+                                            "indexed": false,
+                                            "internalType": "address",
+                                            "name": "from",
+                                            "type": "address"
+                                        },
+                                        {
+                                            "indexed": false,
+                                            "internalType": "uint256",
+                                            "name": "amount",
+                                            "type": "uint256"
+                                        }
+                                    ],
+                                    "name": "PaymentReceived",
+                                    "type": "event"
+                                },
+                                {
+                                    "inputs": [],
+                                    "name": "owner",
+                                    "outputs": [
+                                        {
+                                            "internalType": "address",
+                                            "name": "",
+                                            "type": "address"
+                                        }
+                                    ],
+                                    "stateMutability": "view",
+                                    "type": "function"
+                                },
+                                {
+                                    "inputs": [],
+                                    "name": "pay",
+                                    "outputs": [],
+                                    "stateMutability": "payable",
+                                    "type": "function"
+                                },
+                                {
+                                    "inputs": [],
+                                    "name": "withdraw",
+                                    "outputs": [],
+                                    "stateMutability": "nonpayable",
+                                    "type": "function"
+                                }
+                            ];
+
+                            const web3 = new Web3(window.ethereum);
+                            const paymentContract = new web3.eth.Contract(contractABI, contractAddress);
+
+                            try {
+                                await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+                                const accounts = await web3.eth.getAccounts();
+                                const account = accounts[0];
+                                const amount = web3.utils.toWei('0.1', 'ether');
+
+                                paymentContract.methods.pay().send({ from: account, value: amount })
+                                    .on('receipt', (receipt) => {
+                                        console.log('Payment successful', receipt);
+                                        alert('Payment successful!');
+                                    })
+                                    .on('error', (error) => {
+                                        console.error('Payment failed', error);
+                                        alert('Payment failed: ' + error.message);
+                                    });
+                            } catch (error) {
+                                console.error('Error requesting accounts or sending payment', error);
+                                alert('Error: ' + error.message);
+                            }
+                        } else {
+                            alert('Please install MetaMask!');
+                            console.log('MetaMask is not detected');
+                        }
+                    });
                 }
             })
             .catch(error => {
