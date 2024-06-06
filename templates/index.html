@@ -62,102 +62,109 @@
                     const reportLink = document.createElement('a');
 
                     reportLink.href = `/report?address=${address}`;
-                    reportLink.innerText = '\nView Report';
+                    reportLink.innerText = '\nView Report\n\n';
                                        
                     resultDiv.appendChild(reportLink);
 
-                    const paymentButton = document.createElement('button');
-                    paymentButton.id = 'payButton';
-                    paymentButton.innerText = 'Payment';
-                    resultDiv.appendChild(paymentButton);
+                    if (data.message !== '악의적인 코드입니다'){
+                        const paymentLink = document.createElement('a');
+                        paymentLink.href = '#';
+                        paymentLink.id = 'payLink';
+                        paymentLink.innerText = 'Go to Payment';
+                        paymentLink.style.display = 'block';
 
-                    paymentButton.addEventListener('click', async () => {
-                        if (typeof window.ethereum !== 'undefined') {
-                            console.log('MetaMask is installed!');
+                        resultDiv.appendChild(paymentLink);
 
-                            const contractAddress = '0x24745f2B750f8cAC170AC0699CB91003A4FEB33F';
-                            const contractABI = [
-                                {
-                                    "inputs": [],
-                                    "stateMutability": "nonpayable",
-                                    "type": "constructor"
-                                },
-                                {
-                                    "anonymous": false,
-                                    "inputs": [
-                                        {
-                                            "indexed": false,
-                                            "internalType": "address",
-                                            "name": "from",
-                                            "type": "address"
-                                        },
-                                        {
-                                            "indexed": false,
-                                            "internalType": "uint256",
-                                            "name": "amount",
-                                            "type": "uint256"
-                                        }
-                                    ],
-                                    "name": "PaymentReceived",
-                                    "type": "event"
-                                },
-                                {
-                                    "inputs": [],
-                                    "name": "owner",
-                                    "outputs": [
-                                        {
-                                            "internalType": "address",
-                                            "name": "",
-                                            "type": "address"
-                                        }
-                                    ],
-                                    "stateMutability": "view",
-                                    "type": "function"
-                                },
-                                {
-                                    "inputs": [],
-                                    "name": "pay",
-                                    "outputs": [],
-                                    "stateMutability": "payable",
-                                    "type": "function"
-                                },
-                                {
-                                    "inputs": [],
-                                    "name": "withdraw",
-                                    "outputs": [],
-                                    "stateMutability": "nonpayable",
-                                    "type": "function"
+                        paymentLink.addEventListener('click', async () => {
+                            event.preventDefault();
+
+                            if (typeof window.ethereum !== 'undefined') {
+                                console.log('MetaMask is installed!');
+
+                                const contractAddress = address;
+                                const contractABI = [
+                                    {
+                                        "inputs": [],
+                                        "stateMutability": "nonpayable",
+                                        "type": "constructor"
+                                    },
+                                    {
+                                        "anonymous": false,
+                                        "inputs": [
+                                            {
+                                                "indexed": false,
+                                                "internalType": "address",
+                                                "name": "from",
+                                                "type": "address"
+                                            },
+                                            {
+                                                "indexed": false,
+                                                "internalType": "uint256",
+                                                "name": "amount",
+                                                "type": "uint256"
+                                            }
+                                        ],
+                                        "name": "PaymentReceived",
+                                        "type": "event"
+                                    },
+                                    {
+                                        "inputs": [],
+                                        "name": "owner",
+                                        "outputs": [
+                                            {
+                                                "internalType": "address",
+                                                "name": "",
+                                                "type": "address"
+                                            }
+                                        ],
+                                        "stateMutability": "view",
+                                        "type": "function"
+                                    },
+                                    {
+                                        "inputs": [],
+                                        "name": "pay",
+                                        "outputs": [],
+                                        "stateMutability": "payable",
+                                        "type": "function"
+                                    },
+                                    {
+                                        "inputs": [],
+                                        "name": "withdraw",
+                                        "outputs": [],
+                                        "stateMutability": "nonpayable",
+                                        "type": "function"
+                                    }
+                                ];
+
+                                const web3 = new Web3(window.ethereum);
+                                const paymentContract = new web3.eth.Contract(contractABI, contractAddress);
+
+                                try {
+                                    await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+                                    const accounts = await web3.eth.getAccounts();
+                                    const account = accounts[0];
+                                    const amount = web3.utils.toWei('0.1', 'ether');
+
+                                    paymentContract.methods.pay().send({ from: account, value: amount })
+                                        .on('receipt', (receipt) => {
+                                            console.log('Payment successful', receipt);
+                                            alert('Payment successful!');
+                                        })
+                                        .on('error', (error) => {
+                                            console.error('Payment failed', error);
+                                            alert('Payment failed: ' + error.message);
+                                        });
+                                } catch (error) {
+                                    console.error('Error requesting accounts or sending payment', error);
+                                    alert('Error: ' + error.message);
                                 }
-                            ];
-
-                            const web3 = new Web3(window.ethereum);
-                            const paymentContract = new web3.eth.Contract(contractABI, contractAddress);
-
-                            try {
-                                await window.ethereum.request({ method: 'eth_requestAccounts' });
-
-                                const accounts = await web3.eth.getAccounts();
-                                const account = accounts[0];
-                                const amount = web3.utils.toWei('0.1', 'ether');
-
-                                paymentContract.methods.pay().send({ from: account, value: amount })
-                                    .on('receipt', (receipt) => {
-                                        console.log('Payment successful', receipt);
-                                        alert('Payment successful!');
-                                    })
-                                    .on('error', (error) => {
-                                        console.error('Payment failed', error);
-                                        alert('Payment failed: ' + error.message);
-                                    });
-                            } catch (error) {
-                                console.error('Error requesting accounts or sending payment', error);
-                                alert('Error: ' + error.message);
+                            } else {
+                                alert('Please install MetaMask!');
+                                console.log('MetaMask is not detected');
                             }
-                        } else {
-                            alert('Please install MetaMask!');
-                            console.log('MetaMask is not detected');
-                        }
-                    });
+                        });
+                    }
                 }
             })
             .catch(error => {
