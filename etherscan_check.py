@@ -34,8 +34,8 @@ def get_bytecode(address):
 def check_address(address):
     url = f'https://api-sepolia.etherscan.io/api?module=contract&action=getsourcecode&address={address}&apikey={API_KEY}'
     if API_KEY != None and API_KEY != "":
-    print("there are api key\n")
-    print(API_KEY)
+        print("there are api key\n")
+        print(API_KEY)
     
     response = requests.get(url)
     data = response.json()
