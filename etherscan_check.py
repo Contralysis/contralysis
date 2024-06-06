@@ -44,7 +44,7 @@ def check_address(address):
     if data['status'] == '0':
         return 'error', None
 
-    with open("tests/test_etherscan_check/wallet.txt", "r", newline="\r\n") as f:
+    with open("tests/test_etherscan_check/wallet.txt", "r", encoding="UTF-8", newline="\r\n") as f:
         wallet_code = "".join(f.readlines())
         wallet_code = "".join(wallet_code.split())
         src_code = data['result'][0]['SourceCode']
