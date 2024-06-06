@@ -19,6 +19,6 @@ class TestEtherscanCheck:
         time.sleep(1)
         assert check_address('0x95222290DD7278Aa3Ddd389Cc1E1d165CC4BAfe5') == ('wallet', None)
     def test_error(self):
-        time.sleep(1)
+        time.sleep(2)
         assert check_address('0xbb9bc244d798123fde783fcc1c72d3b223b8c183339414') == ('error', None)
 
