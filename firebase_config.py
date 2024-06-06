@@ -20,6 +20,8 @@ def init_firebase():
     }
 
     # cred = credentials.Certificate('credentials/contralysis-ef9d6-firebase-adminsdk-cztmd-b5d5a53043.json')
+    print(creds_dict)
+
     cred = credentials.Certificate(creds_dict)
     firebase_admin.initialize_app(cred)
 
