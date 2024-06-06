@@ -1,4 +1,5 @@
 from etherscan_check import check_address
+import pytest
 import time
 
 class TestEtherscanCheck:
