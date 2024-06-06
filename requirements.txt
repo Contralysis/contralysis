@@ -6,4 +6,5 @@ pytest
 flask
 selenium
 chromedriver-autoinstaller
+bs4
 web3
