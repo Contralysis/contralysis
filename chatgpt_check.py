@@ -32,5 +32,5 @@ def analyze_contract(source_code):
         return f"{result}\n\n{analysis}"
     
     except Exception as e:
-        print(f"GPT API 오류: {e}")
-        return f"GPT API 호출 중 오류가 발생했습니다: {str(e)}"
+        print(f"GPT API Error: {e}")
+        return f"An error occurred while calling the GPT API: {str(e)}"

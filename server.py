@@ -45,7 +45,7 @@ def authenticate():
         return redirect(url_for('index'))
     
     else:
-        return jsonify({'message': '로그인 실패'}), 400
+        return jsonify({'message': 'Login Failed'}), 400
 
 @app.route('/logout')
 def logout():
@@ -63,18 +63,18 @@ def check():
     user_id = session['user_id']
 
     if not address or not user_id:
-        return jsonify({'message': '주소와 사용자 ID를 입력해 주세요'}), 400
+        return jsonify({'message': 'Please enter your address and user ID'}), 400
 
     address_type, source_code = check_address(address)
     
     if address_type == 'wallet':
-        result = "지갑 주소 입니다"
+        result = "This is the wallet address"
         return jsonify({'message': result})
     
     elif address_type == 'contract':
         report = analyze_contract(source_code)
 
-        if "GPT API 호출 중 오류가 발생했습니다" in report:
+        if "An error occurred while calling the GPT API" in report:
             return jsonify({'message': report}), 500
         
         result_gpt, analysis = report.split('\n\n', 1)
@@ -83,14 +83,14 @@ def check():
         try:
             save_report(user_id, address, result_gpt, analysis)
         except Exception as e:
-            print(f"보고서 저장 중 오류 발생: {e}")
-            return jsonify({'message': '보고서를 저장하는 중 오류가 발생했습니다.'}), 500
+            print(f"Error saving report: {e}")
+            return jsonify({'message': 'An error occurred while saving the report.'}), 500
         
-        result = "악의적인 코드입니다" if "악의적인 코드입니다" in report.split("\n")[0] else "악의적이지 않은 코드입니다"
+        result = "This is malicious." if "This is malicious." in report.split("\n")[0] else "This is not malicious."
         return jsonify({'message': result})
     
     else:   
-        return jsonify({'message': '잘못된 주소입니다'}), 400
+        return jsonify({'message': 'Invalid address'}), 400
 
 @app.route('/report')
 def report():
@@ -101,7 +101,7 @@ def report():
     user_id = session['user_id']
 
     if not address or not user_id:
-        return "주소와 사용자 ID를 제공해 주세요.", 400
+        return "Please provide me with your address and user ID.", 400
 
     report = get_report(user_id, address)
 
@@ -110,7 +110,7 @@ def report():
     if report:
         return render_template('report.html', report=report, address=address, analysis=analysis)
     else:
-        return "보고서를 찾을 수 없습니다.", 404
+        return "Report not found.", 404
     
 @app.route('/history')
 def history():
