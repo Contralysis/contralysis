@@ -59,7 +59,7 @@ def check_address(address):
             return get_bytecode(address)
 
 print(check_address('0x95222290DD7278Aa3Ddd389Cc1E1d165CC4BAfe5'))
-if API_KEY != None:
+if API_KEY != None and API_KEY != "":
     print("there are api key\n")
     print(API_KEY)
     
