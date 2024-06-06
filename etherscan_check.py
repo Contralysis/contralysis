@@ -62,4 +62,4 @@ def check_address(address):
             return get_bytecode(address)
 
 if __name__ == '__main__':
-    print(check_address(0xasdfdsaf))
+    print(check_address('0xasdfdsaf'))
