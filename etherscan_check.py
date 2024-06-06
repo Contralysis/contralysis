@@ -42,7 +42,7 @@ def check_address(address):
         return 'error', None
 
     if data['status'] == '0':
-            return 'error', None
+        return 'error', None
 
     with open("tests/test_etherscan_check/wallet.txt", "r", newline="\r\n") as f:
         wallet_code = "".join(f.readlines())
