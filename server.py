@@ -122,5 +122,12 @@ def history():
     
     return render_template('history.html', reports=reports)
 
+@app.route('/payment')
+def payment():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    
+    return render_template('payment.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
