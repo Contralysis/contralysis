@@ -2,6 +2,9 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.expected_conditions import alert_is_present
+from selenium.webdriver.support.wait import WebDriverWait
+
 import time
 import chromedriver_autoinstaller
 import subprocess
@@ -72,10 +75,30 @@ class TestWebApp:
         password_field.send_keys("12345678")
         login_button.click()
         
-        time.sleep(2)  # 페이지 로드 대기
+        # time.sleep(5)  # 페이지 로드 대기
+        wait = WebDriverWait(self.driver, timeout=5)
+        title = wait.until(lambda d: "Ethereum Address Checker" in self.driver.title )
         
-        # 로그인 후 페이지 제목 확인
-        assert "Ethereum Address Checker" in self.driver.title
+        assert title
+
+
+    def test_login_fail(self):
+        # 로컬 서버에 접속
+        self.driver.get("http://127.0.0.1:5000/login")
+        
+        # 로그인 테스트
+        email_field = self.driver.find_element("name", "email")
+        password_field = self.driver.find_element("name", "password")
+        login_button = self.driver.find_element("tag name", "button")
+        
+        email_field.send_keys("21900421@handong.edu")
+        password_field.send_keys("wrong password")
+        login_button.click()
+        
+        wait = WebDriverWait(self.driver, timeout=5)
+        alert = wait.until(alert_is_present())
+        
+        assert alert
 
 if __name__ == "__main__":
     pytest.main()
