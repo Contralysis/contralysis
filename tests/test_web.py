@@ -152,6 +152,35 @@ class TestWebApp:
         print(f"Wallet Result Text: {result_text}")  # 결과 텍스트를 출력하여 디버그
         assert "This is the wallet address" in result_text
 
+    def test_check_register_page(self):
+        # 로컬 서버에 접속
+        self.driver.get("http://127.0.0.1:5000/login")
+        
+        # Register 링크 클릭
+        register_link = self.driver.find_element("link text", "Register")
+        register_link.click()
+        
+        # 페이지 로드 대기
+        wait = WebDriverWait(self.driver, 10)
+        wait.until(lambda driver: "Register" in driver.title)
+        
+        # Register 페이지 제목 확인
+        assert "Register" in self.driver.title
+    
+
+    def test_logout_redirect(self):
+        self.test_login()
+        self.driver.get("http://127.0.0.1:5000")
+        
+        logout_link = self.driver.find_element("link text", "Logout")
+        logout_link.click()
+        
+        time.sleep(2)  # 페이지 로드 대기
+        
+        # 로그아웃 후 페이지 제목 확인
+        assert "Login" in self.driver.title
+
+
     def test_login_fail(self):
         # 로컬 서버에 접속
         self.driver.get("http://127.0.0.1:5000/login")
