@@ -1,9 +1,26 @@
 import firebase_admin
 from firebase_admin import credentials, auth, firestore
+import os
+import json
 
 # Initialize Firebase
 def init_firebase():
-    cred = credentials.Certificate('credentials/contralysis-ef9d6-firebase-adminsdk-cztmd-b5d5a53043.json')
+    creds_dict = {
+        "type": "service_account",
+        "project_id": "contralysis-ef9d6",
+        "private_key_id": os.getenv('PRIVATE_KEY_ID'),
+        "private_key": os.getenv('PRIVATE_KEY').replace('\\n', '\n'),
+        "client_email": os.getenv('CLIENT_EMAIL'),
+        "client_id": os.getenv('CLIENT_ID'),
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_x509_cert_url": os.getenv('CLIENT_X509_CERT_URL'),
+        "universe_domain": "googleapis.com"
+    }
+
+    # cred = credentials.Certificate('credentials/contralysis-ef9d6-firebase-adminsdk-cztmd-b5d5a53043.json')
+    cred = credentials.Certificate(creds_dict)
     firebase_admin.initialize_app(cred)
 
 def save_report(user_id, address, result, analysis):
