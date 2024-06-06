@@ -3,7 +3,7 @@ import pytest
 import time
 
 class TestEtherscanCheck:
-    @pytest.mark.order1
+    @pytest.mark.order3
     def test_contract(self):
         src_dir = 'tests/test_etherscan_check'
         with open(f"{src_dir}/0x9bcCB0Dd17c1B2A62B70Ac4Bfad033a90CbA6F50.txt", "r", newline="\r\n") as f:
@@ -13,11 +13,11 @@ class TestEtherscanCheck:
             result_type = result[0]
             result_src = "".join(result[1].split())
             assert (result_type, result_src) == ('contract', src_code)
-    @pytest.mark.order2   
+    @pytest.mark.order2  
     def test_wallet(self):
         time.sleep(1)
         assert check_address('0x95222290DD7278Aa3Ddd389Cc1E1d165CC4BAfe5') == ('wallet', None)
-    @pytest.mark.order3
+    @pytest.mark.order1
     def test_error(self):
         time.sleep(2)
         assert check_address('0xbb9bc244d798123fde783fcc1c72d3b223b8c183339414') == ('error', None)
