@@ -1,9 +1,28 @@
 import pytest
+import subprocess
+import os
+import signal
+import time
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.keys import Keys
-import time
 import chromedriver_autoinstaller
+
+@pytest.fixture(scope="class")
+def server_init(request):
+    # server.py 경로 설정
+    server_path = os.path.join(os.path.dirname(__file__), '../server.py')
+    
+    # 서버를 백그라운드에서 실행
+    process = subprocess.Popen(['python', server_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    time.sleep(3)  # 서버가 시작될 시간을 줌
+    
+    def teardown():
+        # 서버 종료
+        os.kill(process.pid, signal.SIGTERM)
+    
+    request.addfinalizer(teardown)
+    return process
 
 @pytest.fixture(scope="class")
 def driver_init(request):
@@ -22,7 +41,7 @@ def driver_init(request):
     yield
     driver.quit()
 
-@pytest.mark.usefixtures("driver_init")
+@pytest.mark.usefixtures("server_init", "driver_init")
 class TestWebApp:
 
     def test_home_page(self):
