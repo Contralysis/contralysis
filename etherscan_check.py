@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 load_dotenv()
 
 API_KEY = os.getenv('ETHERSCAN_API_KEY')
+print("><")
 print(API_KEY)
 
 def get_bytecode(address):
