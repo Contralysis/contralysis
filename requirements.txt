@@ -8,3 +8,4 @@ selenium
 chromedriver-autoinstaller
 bs4
 web3
+retry
