@@ -24,7 +24,7 @@ def subscriber_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if 'is_subscriber' not in session or not session['is_subscriber']:
-            return jsonify({'message': 'You must be a subscriber to access this page'}), 403
+            return redirect(url_for('show_subscribe'))
         return f(*args, **kwargs)
     return decorated_function
 
@@ -43,8 +43,16 @@ def register():
 
         try:
             decoded_token = verify_id_token(id_token)
+            print(f"Decoded Token: {decoded_token}")
+
+            if not decoded_token:
+                raise ValueError("Invalid ID token")
+
             user_id = decoded_token['uid']
             email = decoded_token['email']
+
+            if not email:
+                raise ValueError("Email not found in decoded token")
 
             # Set initial subscription status to False
             auth.set_custom_user_claims(user_id, {'subscriber': False})
@@ -60,6 +68,7 @@ def register():
 
             return jsonify({'message': 'User created successfully'}), 200
         except Exception as e:
+            print(f"Error creating user: {str(e)}")
             return jsonify({'message': 'Error creating user', 'error': str(e)}), 400
 
     return render_template('register.html', firebase_config=app.config['FIREBASE_CONFIG'])
@@ -70,12 +79,16 @@ def login():
 
 @app.route('/authenticate', methods=['POST'])
 def authenticate():
-    id_token = request.form['idToken']
-    user_id = verify_id_token(id_token)
+    data = request.get_json()
+    id_token = data.get('idToken')
+    print(f"ID Token received: {id_token}")
 
-    time.sleep(1) # need to wait a bit before verifying id token
+    decoded_token = verify_id_token(id_token)
 
-    if user_id:
+    time.sleep(1)  # need to wait a bit before verifying id token
+
+    if decoded_token:
+        user_id = decoded_token['uid']
         session['user_id'] = user_id
 
         # Fetch user profile from Firestore
@@ -88,9 +101,9 @@ def authenticate():
         
         print(f"Authenticated user ID: {user_id}, Subscriber: {session['is_subscriber']}")
         
-        return redirect(url_for('index'))
-    
+        return jsonify({'message': 'Authentication successful'}), 200
     else:
+        print("User ID not found or invalid token")
         return jsonify({'message': 'Login Failed'}), 400
 
 @app.route('/logout')
