@@ -1,0 +1,11 @@
+python-dotenv
+firebase_admin
+requests
+openai
+pytest
+flask
+selenium
+chromedriver-autoinstaller
+bs4
+web3
+retry

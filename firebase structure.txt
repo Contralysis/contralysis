@@ -1,0 +1,10 @@
+results 
+      | ------ address (string)
+      | ------ analysis (string)
+      | ------ result (string)
+      | ------ user_id (string)
+
+users 
+      | ------ email (string)
+      |
+      | ------ subscriber (boolean)
