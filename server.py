@@ -139,7 +139,7 @@ def check():
         
         result_gpt, analysis = report.split('\n\n', 1)
 
-        # 보고서 저장
+        # Save the report
         try:
             save_report(user_id, address, result_gpt, analysis)
         except Exception as e:
@@ -193,7 +193,7 @@ def payment():
 @app.route('/subscribe', methods=['POST'])
 def subscribe():
     if 'user_id' not in session:
-        return jsonify({'message': '로그인 필요합니다'}), 400
+        return jsonify({'message': 'Login is required'}), 400
 
     user_id = session['user_id']
     
@@ -209,9 +209,9 @@ def subscribe():
         # Update the session
         session['is_subscriber'] = True
         
-        return jsonify({'message': '구독이 완료되었습니다'}), 200
+        return jsonify({'message': 'Subscription is completed.'}), 200
     except Exception as e:
-        return jsonify({'message': f'구독 중 오류가 발생했습니다: {str(e)}'}), 500
+        return jsonify({'message': f'An error occurred while subscribing: {str(e)}'}), 500
     
 @app.route('/subscribe', methods=['GET'])
 def show_subscribe():
