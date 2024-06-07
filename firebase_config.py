@@ -67,10 +67,11 @@ def get_analysis(user_id, address):
 
 
 # need to handle exception
-@retry(auth.InvalidIdTokenError, tries=6, delay=0.5)
+@retry(auth.InvalidIdTokenError, tries=10, delay=0.5)
 def verify_id_token(id_token):
+    print('tryping auth')
     decoded_token = auth.verify_id_token(id_token)
-    return decoded_token['uid']
+    return decoded_token
 
 
 # Save user profile to Firestore

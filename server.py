@@ -77,14 +77,17 @@ def login():
 
 @app.route('/authenticate', methods=['POST'])
 def authenticate():
-    id_token = request.form['idToken']
+    data = request.get_json()
+    id_token = data.get('idToken')
+    print(f"ID Token received: {id_token}")
     
     try:
-        user_id = verify_id_token(id_token)
+        decoded_token = verify_id_token(id_token)
     except Exception as e:
-        user_id = None
+        decoded_token = None
 
-    if user_id:
+    if decoded_token:
+        user_id = decoded_token['uid']
         session['user_id'] = user_id
 
         # Fetch user profile from Firestore
