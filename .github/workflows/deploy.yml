@@ -31,6 +31,6 @@ jobs:
         --build-arg CLIENT_EMAIL=${{ secrets.CLIENT_EMAIL }} \
         --build-arg CLIENT_ID=${{ secrets.CLIENT_ID }} \
         --build-arg CLIENT_X509_CERT_URL=${{ secrets.CLIENT_X509_CERT_URL }} \
-        --build-arg GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} \
+        --build-arg GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
         sudo docker stop $(sudo docker ps -q) 2>/dev/null || true
         docker run -d -p 5000:5000 ${{ secrets.DOCKER_USERNAME }}/contralysis
