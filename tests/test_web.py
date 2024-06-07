@@ -4,6 +4,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.expected_conditions import alert_is_present, text_to_be_present_in_element
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
 import time
 import chromedriver_autoinstaller
 import subprocess
@@ -95,7 +96,7 @@ class TestWebApp:
         
         # 체크 후 결과 확인
         result_text = self.driver.find_element("id", "result").text
-        print(f"Scam Result Text: {result_text}")  # 결과 텍스트를 출력하여 디버그
+        print(f"Scam Result Text: {result_text}")  
         assert "This is malicious." in result_text
 
     def test_check_normal(self):
@@ -113,7 +114,7 @@ class TestWebApp:
         
         # 체크 후 결과 확인
         result_text = self.driver.find_element("id", "result").text
-        print(f"Normal Result Text: {result_text}")  # 결과 텍스트를 출력하여 디버그
+        print(f"Normal Result Text: {result_text}") 
         assert "This is not malicious." in result_text
 
     def test_check_invalid(self):
@@ -131,7 +132,7 @@ class TestWebApp:
         
         # 체크 후 결과 확인
         result_text = self.driver.find_element("id", "result").text
-        print(f"Invalid Result Text: {result_text}")  # 결과 텍스트를 출력하여 디버그
+        print(f"Invalid Result Text: {result_text}") 
         assert "Invalid address" in result_text
 
     def test_check_wallet(self):
@@ -149,7 +150,7 @@ class TestWebApp:
         
         # 체크 후 결과 확인
         result_text = self.driver.find_element("id", "result").text
-        print(f"Wallet Result Text: {result_text}")  # 결과 텍스트를 출력하여 디버그
+        print(f"Wallet Result Text: {result_text}") 
         assert "This is the wallet address" in result_text
 
     def test_check_register_page(self):
@@ -179,6 +180,59 @@ class TestWebApp:
         
         # 로그아웃 후 페이지 제목 확인
         assert "Login" in self.driver.title
+
+    def test_report_who_subscribe(self):
+        self.test_login()  # 로그인이 성공해야 함
+        self.driver.get("http://127.0.0.1:5000")
+        
+        # 정상적인 주소 입력
+        address_field = self.driver.find_element("name", "address")
+        check_button = self.driver.find_element("tag name", "button")
+        
+        address_field.send_keys("0x9bcCB0Dd17c1B2A62B70Ac4Bfad033a90CbA6F50")
+        check_button.click()
+        
+        # View Report 버튼 클릭
+        wait = WebDriverWait(self.driver, 10)
+        view_report_link = wait.until(lambda driver: driver.find_element("link text", "View Report"))
+        view_report_link.click()
+        
+        # Report 페이지로 이동했는지 확인
+        wait.until(lambda driver: "Report" in driver.title)
+        assert "Report" in self.driver.title
+
+    def test_report_who_not_subscribe(self):
+        # 다른 사용자로 로그인
+        self.driver.get("http://127.0.0.1:5000/login")
+    
+        email_field = self.driver.find_element("name", "email")
+        password_field = self.driver.find_element("name", "password")
+        login_button = self.driver.find_element("tag name", "button")
+    
+        email_field.send_keys("qwer1234@naver.com")
+        password_field.send_keys("12345678")
+        login_button.click()
+    
+        # 로그인 성공 확인
+        wait = WebDriverWait(self.driver, 10) 
+        wait.until(lambda driver: "Ethereum Address Checker" in driver.title)
+        assert "Ethereum Address Checker" in self.driver.title
+    
+        # 정상적인 주소 입력
+        address_field = self.driver.find_element("name", "address")
+        check_button = self.driver.find_element("tag name", "button")
+    
+        address_field.send_keys("0x9bcCB0Dd17c1B2A62B70Ac4Bfad033a90CbA6F50")
+        check_button.click()
+    
+        # View Report 버튼 클릭
+        view_report_link = wait.until(lambda driver: driver.find_element("link text", "View Report"))
+        view_report_link.click()
+    
+        # Subscription Required 페이지로 이동했는지 확인
+        wait.until(lambda driver: driver.find_element(By.TAG_NAME, "h1").text == "Subscription Required")
+        assert "Subscribe" in self.driver.title
+
 
 
     def test_login_fail(self):
