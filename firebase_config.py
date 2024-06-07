@@ -71,3 +71,20 @@ def get_analysis(user_id, address):
 def verify_id_token(id_token):
     decoded_token = auth.verify_id_token(id_token)
     return decoded_token['uid']
+
+
+# Save user profile to Firestore
+def save_user_profile(user_id, profile_data):
+    db = firestore.client()
+    db.collection('users').document(user_id).set(profile_data)
+
+# Get user profile from Firestore
+def get_user_profile(user_id):
+    db = firestore.client()
+    user_doc = db.collection('users').document(user_id).get()
+    return user_doc.to_dict() if user_doc.exists else None
+
+# Update user subscription status in Firestore
+def update_user_subscription(user_id, is_subscriber):
+    db = firestore.client()
+    db.collection('users').document(user_id).update({'subscriber': is_subscriber})
