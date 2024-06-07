@@ -67,9 +67,10 @@ def verify_id_token(id_token):
     try:
         decoded_token = auth.verify_id_token(id_token)
         
-        return decoded_token['uid']
+        return decoded_token
     
     except Exception as e:
+        print(f"Error verifying ID token: {str(e)}")
         return None
 
 # Save user profile to Firestore
