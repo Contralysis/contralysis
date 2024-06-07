@@ -17,7 +17,23 @@ jobs:
     - name: Build and push Docker image
       run: |
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-        docker build -t ${{ secrets.DOCKER_USERNAME }}/contralysis .
+        docker build \
+        -t ${{ secrets.DOCKER_USERNAME }}/contralysis \
+        --build-arg FIREBASE_API_KEY=${{ secrets.FIREBASE_API_KEY }} \
+        --build-arg FIREBASE_AUTH_DOMAIN=${{ secrets.FIREBASE_AUTH_DOMAIN }} \
+        --build-arg FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }} \
+        --build-arg FIREBASE_STORAGE_BUCKET=${{ secrets.FIREBASE_STORAGE_BUCKET }} \
+        --build-arg FIREBASE_MESSAGING_SENDER_ID=${{ secrets.FIREBASE_MESSAGING_SENDER_ID }} \ 
+        --build-arg FIREBASE_APP_ID=${{ secrets.FIREBASE_APP_ID }} \
+        --build-arg ETHERSCAN_API_KEY=${{ secrets.ETHERSCAN_API_KEY }} \
+        --build-arg OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
+        --build-arg PRIVATE_KEY_ID=${{ secrets.PRIVATE_KEY_ID }} \
+        --build-arg PRIVATE_KEY=${{ secrets.PRIVATE_KEY }} \
+        --build-arg CLIENT_EMAIL=${{ secrets.CLIENT_EMAIL }} \
+        --build-arg CLIENT_ID=${{ secrets.CLIENT_ID }} \
+        --build-arg CLIENT_X509_CERT_URL=${{ secrets.CLIENT_X509_CERT_URL }} \
+        --build-arg GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }} \
+         .
         
         sudo docker stop $(sudo docker ps -q) 2>/dev/null || true
         docker run -d -p 5000:5000 ${{ secrets.DOCKER_USERNAME }}/contralysis
