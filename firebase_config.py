@@ -1,7 +1,9 @@
 import firebase_admin
 from firebase_admin import credentials, auth, firestore
+from firebase_admin import exceptions
 import os
 import json
+from retry import retry
 
 # Initialize Firebase
 def init_firebase():
@@ -63,11 +65,9 @@ def get_analysis(user_id, address):
     
     return None
 
+
+# need to handle exception
+@retry(auth.InvalidIdTokenError, tries=6, delay=0.5)
 def verify_id_token(id_token):
-    try:
-        decoded_token = auth.verify_id_token(id_token)
-        
-        return decoded_token['uid']
-    
-    except Exception as e:
-        return None
+    decoded_token = auth.verify_id_token(id_token)
+    return decoded_token['uid']
