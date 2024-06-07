@@ -9,9 +9,7 @@ from functools import wraps
 from config import Config
 import time
 
-import os
 from dotenv import load_dotenv
-
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
