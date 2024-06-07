@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscribe</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Subscription Required</h1>
+        <p>Need to subscribe to access this content</p>
+        <form id="subscribe-form">
+            <button type="button" onclick="subscribe()">Subscribe Now</button>
+        </form>
+        <div id="message"></div>
+        <br>
+        <a href="/">Home</a>
+    </div>
+    <script>
+        async function subscribe() {
+            try {
+                const response = await fetch('/subscribe', { method: 'POST' });
+                const data = await response.json();
+                document.getElementById('message').innerText = data.message;
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('message').innerText = 'An error occurred while subscribing.';
+            }
+        }
+    </script>
+</body>
+</html>
