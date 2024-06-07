@@ -6,6 +6,4 @@ COPY . .
 
 RUN pip install -r requirements.txt
 
-ENV $(cat .env | grep -v ^# | xargs)
-
-CMD ["cat", ".env"]
+CMD ["python", "server.py"]
