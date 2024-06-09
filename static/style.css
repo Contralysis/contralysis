@@ -19,13 +19,15 @@ body {
 h1 {
     font-size: 2rem;
     margin-bottom: 20px;
-    color: #6ab04c; /* Green color */
+    /*color: #6ab04c; /* Green color */
+    color: red;
     text-align: center;
 }
 
 h2, h3 {
     margin-bottom: 10px;
-    color: #6ab04c;
+    /*color: #6ab04c; /* Green color */
+    color: red;
     text-align: center;
 }
 
@@ -88,7 +90,8 @@ input[type="text"], input[type="email"], input[type="password"], button {
 }
 
 button {
-    background-color: #6ab04c; /* Green color */
+    /*background-color: #6ab04c; /* Green color */
+    background-color: pink;
     color: #fff;
     cursor: pointer;
     border: none;
@@ -102,12 +105,14 @@ button {
 }
 
 button:hover {
-    background-color: #009432; /* Darker green */
+    /*background-color: #009432; /* Darker green */
+    background-color: pink;
 }
 
 a.button {
     display: inline-block;
-    background-color: #6ab04c; /* Green color */
+    /*background-color: #6ab04c; /* Green color */
+    background-color: pink;
     color: #fff;
     cursor: pointer;
     border: none;
@@ -121,7 +126,8 @@ a.button {
 }
 
 a.button:hover {
-    background-color: #009432; /* Darker green */
+    /*background-color: #009432; /* Darker green */
+    background-color: pink;
 }
 
 .table-container {
